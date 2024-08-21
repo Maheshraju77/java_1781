@@ -1,0 +1,48 @@
+import java.util.Scanner;
+
+public class NegativeFibonacciSeries {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+ 
+        System.out.print("Enter the n value: ");
+        int n = sc.nextInt();
+        
+    
+        printNegativeFibonacci(n);
+    }
+    
+   
+    public static void printNegativeFibonacci(int n) {
+        if (n <= 0) return;
+        
+       
+        int a = 0, b = 1;
+        System.out.print(a + "\t");
+        if (n > 1) System.out.print(b + "\t");
+        
+      
+        for (int i = 2; i < n; i++) {
+            int next = a + b;
+            System.out.print(next + "\t");
+            a = b;
+            b = next;
+        }
+        
+      
+        a = 0;
+        b = 1;
+        System.out.print("\nNegative Fibonacci: ");
+        System.out.print(a + "\t");
+        System.out.print(b + "\t");
+        
+        for (int i = 2; i < n; i++) {
+            int next = b - a;
+            System.out.print(next + "\t");
+            b = a;
+            a = next;
+        }
+        
+        System.out.println();
+    }
+}
