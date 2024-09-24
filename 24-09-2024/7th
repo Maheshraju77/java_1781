@@ -1,0 +1,46 @@
+mport java.util.Scanner;
+
+public class SpeedCalculator {
+public static void main(String[] args) {
+Scanner scanner = new Scanner(System.in);
+
+    System.out.print("Input distance in meters: ");
+    double distance = scanner.nextDouble();
+    System.out.print("Input hour: ");
+    int hour = scanner.nextInt();
+    System.out.print("Input minutes: ");
+    int minute = scanner.nextInt();
+    System.out.print("Input seconds: ");
+    int second = scanner.nextInt();
+
+    int totalTimeInSeconds = (hour * 3600) + (minute * 60) + second;
+    double speedMetersPerSecond = distance / totalTimeInSeconds;
+    double speedKmPerHour = (distance / 1000.0) / (totalTimeInSeconds / 3600.0);
+    double speedMilesPerHour = (distance / 1609.0) / (totalTimeInSeconds / 3600.0);
+
+    System.out.println("Your speed in meters/second is " + speedMetersPerSecond);
+    System.out.println("Your speed in km/h is " + speedKmPerHour);
+    System.out.println("Your speed in miles/h is " + speedMilesPerHour);
+}
+}
+
+Owner
+Author
+@Charumathi45 Charumathi45 commented on 4c545df 34 minutes ago
+import java.util.Scanner;
+
+public class PowerCalculator {
+public static void main(String[] args) {
+Scanner scanner = new Scanner(System.in);
+System.out.print("Input a number: ");
+double number = scanner.nextDouble();
+
+    double square = Math.pow(number, 2);
+    double cube = Math.pow(number, 3);
+    double fourthPower = Math.pow(number, 4);
+
+    System.out.printf("Square: %.2f\n", square);
+    System.out.printf("Cube: %.2f\n", cube);
+    System.out.printf("Fourth power: %.2f\n", fourthPower);
+}
+}
