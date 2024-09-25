@@ -1,0 +1,87 @@
+import java.util.Scanner;
+
+class Customer {
+    // Instance variables
+    private String accName;
+    private int accountNo;
+    private double balance;
+
+    // Constructor to initialize account details
+    public Customer(String accName, int accountNo, double balance) {
+        this.accName = accName;
+        this.accountNo = accountNo;
+        this.balance = balance;
+    }
+
+    // Synchronized method to withdraw money
+    public synchronized void withdraw(double amount) {
+        System.out.println(Thread.currentThread().getName() + " is attempting to withdraw: " + amount);
+        // Check if the requested amount is greater than the available balance
+        while (balance < amount) {
+            System.out.println("Insufficient balance for withdrawal. Waiting for deposit...");
+            try {
+                wait(); // Waiting for deposit to be made
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Thread interrupted: " + e.getMessage());
+            }
+        }
+        // Withdraw the amount
+        balance -= amount;
+        System.out.println("Withdrawal successful. Remaining balance: " + balance);
+    }
+
+    // Synchronized method to deposit money
+    public synchronized void deposit(double amount) {
+        System.out.println(Thread.currentThread().getName() + " is depositing: " + amount);
+        balance += amount;
+        System.out.println("Deposit successful. New balance: " + balance);
+        notify(); // Notifying waiting threads (if any)
+    }
+
+    // Method to display account details (optional)
+    public void displayAccountDetails() {
+        System.out.println("Account Holder: " + accName);
+        System.out.println("Account Number: " + accountNo);
+        System.out.println("Current Balance: " + balance);
+    }
+}
+
+public class BankOperation {
+    public static void main(String[] args) {
+        // Initialize customer with an existing balance of 10000
+        Customer customer = new Customer("John Doe", 123456789, 10000);
+
+        // Input for deposit and withdrawal operations using Scanner
+        Scanner sc = new Scanner(System.in);
+
+        // Create a thread for withdrawal
+        Thread withdrawThread = new Thread(() -> {
+            System.out.print("Enter amount to withdraw: ");
+            double amountToWithdraw = sc.nextDouble();
+            customer.withdraw(amountToWithdraw); // Calling withdraw method
+        }, "WithdrawThread");
+
+        // Create a thread for deposit
+        Thread depositThread = new Thread(() -> {
+            System.out.print("Enter amount to deposit: ");
+            double amountToDeposit = sc.nextDouble();
+            customer.deposit(amountToDeposit); // Calling deposit method
+        }, "DepositThread");
+
+        // Start both threads
+        withdrawThread.start();
+
+        // Delay the deposit process to simulate the scenario of waiting
+        try {
+            Thread.sleep(2000); // Simulate time delay for deposit
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        depositThread.start();
+
+        // Close the scanner to prevent resource leaks
+        sc.close();
+    }
+}
